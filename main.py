@@ -49,7 +49,9 @@ def get_files(id):
         'id': id
     }, None)
 
-    return jsonify(res['body'])
+    print(res)
+
+    return jsonify(res)
 
 if __name__ == "__main__":
     port = os.getenv("PORT", 5000)
