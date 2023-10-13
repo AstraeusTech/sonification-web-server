@@ -16,6 +16,7 @@ config = sonificationConfig(
 )
 
 def handler(event, context):
+    print("Executing event")
     s3_bucket = os.getenv("S3_BUCKET")
 
     file_link = event['id']
@@ -32,10 +33,12 @@ def handler(event, context):
     file_link_without_extension = file_link.split(".")[0]
     s3_client.put_object(Body=sonification, Bucket=s3_bucket, Key=file_link_without_extension + ".wav")
 
-    create_point_cloud(image, "test.pcd")
-    s3_client.upload_file("test.pcd", s3_bucket, file_link_without_extension + ".pcd")
+    model_file_name = file_link_without_extension + ".pcd"
 
-    os.remove("test.pcd")
+    create_point_cloud(image, model_file_name)
+    s3_client.upload_file(model_file_name, s3_bucket, model_file_name)
+
+    os.remove(model_file_name)
 
     return {
       'statusCode': 200,
@@ -56,8 +59,3 @@ def get_files(id):
 if __name__ == "__main__":
     port = os.getenv("PORT", 5000)
     app.run(debug=True, host='0.0.0.0', port=port)
-    # res = handler({
-    #     'id': '02-medium-cut-with-wavy-hair.jpg'
-    # }, None)
-
-    # print(res)
