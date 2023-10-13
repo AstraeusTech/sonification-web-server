@@ -19,4 +19,4 @@ ENV PORT 8080
 EXPOSE 8080
 
 # Run app.py when the container launches
-CMD ["python", "main.py"]
+CMD ["python", "app.py"]
